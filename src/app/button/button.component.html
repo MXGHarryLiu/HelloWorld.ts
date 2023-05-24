@@ -1,2 +1,9 @@
-<button (click)="showBanner()">Click Me!</button>
-<div *ngIf="showHello" class="banner">Hello, World!</div>
+<button (click)="getData()">Get Position</button>
+<div *ngIf="data">
+  <h2>X: {{ data.X }}</h2>
+  <h2>Y: {{ data.Y }}</h2>
+</div>
+<div *ngIf="!data">
+  <h2>X: ?</h2>
+  <h2>Y: ?</h2>
+</div>

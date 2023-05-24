@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-button',
@@ -6,11 +7,26 @@ import { Component } from '@angular/core';
   styleUrls: ['./button.component.css']
 })
 export class ButtonComponent {
-  showHello: boolean = false;
+  data: any;
+  url: string;
 
-  showBanner() {
-    this.showHello = true;
+  getData() {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+
+    this.http.get<any>(this.url)
+      .subscribe({
+        next: (v) => this.data = v.data,
+        error: (e) => console.error(e),
+      }       
+    );
   }
 
-	constructor() {}
+  constructor(private http: HttpClient) {
+    this.url = '/api/device/PriorStage/position';
+  }
 }
