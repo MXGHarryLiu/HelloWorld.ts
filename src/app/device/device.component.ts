@@ -12,6 +12,7 @@ export class DeviceComponent implements OnInit {
   url: string = '';
   data: any;
   retryCount = 3;
+  showExpansionPanel: boolean = false;
 
   constructor (private http: HttpClient) {}
 
@@ -19,9 +20,15 @@ export class DeviceComponent implements OnInit {
     this.url = 'http://localhost:1234/device/' + this.name;
     this.http.get<any>(this.url).pipe(retry(this.retryCount))
       .subscribe({
-        next: (v) => this.data = v,
+        next: (v) => {
+          this.data = v;
+          this.showExpansionPanel = this.data.hasOwnProperty('Property');
+        },
         error: (e) => console.error(e),
       }
     );
+   
   }
+
+
 }

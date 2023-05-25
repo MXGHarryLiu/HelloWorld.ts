@@ -8,6 +8,7 @@ import { DeviceComponent } from './device/device.component';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  title: string = "Microscopy Hardware Control"
   url: string = 'http://localhost:1234/manager/device';
   response: any;
   devices: string[] = [];

@@ -1,11 +1,33 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>{{ name }}</mat-card-title>
+    <mat-card-subtitle>{{ data?.Class || '...'}} by {{ data?.Vender || '...' }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <p>Vender: {{ data?.Vender || '' }}, Type: {{ data?.Class || ''}}</p>
+    <ng-container *ngIf="showExpansionPanel">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-icon>location_on</mat-icon>
+          <mat-panel-title>{{ data.Property }}</mat-panel-title>
+          <mat-panel-description>
+            (X, Y)
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-form-field>
+          <mat-label>X</mat-label>
+          <input matInput type="number">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Y</mat-label>
+          <input matInput type="number">
+        </mat-form-field>
+      </mat-expansion-panel>
+    </ng-container>
   </mat-card-content>
-  <mat-card-actions>
-    <!-- <button mat-button>Button 2</button> -->
-  </mat-card-actions>
+  <!-- <mat-card-actions>
+    
+  </mat-card-actions> -->
+  <!-- <mat-card-footer>
+
+  </mat-card-footer> -->
 </mat-card>

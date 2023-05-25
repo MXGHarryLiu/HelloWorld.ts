@@ -1,3 +1,9 @@
 mat-sidenav-container {
     height: calc(100vh - 64px); /* Adjust the value based on your layout */
 }
+
+.card-container {
+    display: flex;
+    flex-direction: column;
+}
+  
