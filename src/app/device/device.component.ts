@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { retry } from 'rxjs/operators';
+import { retry, switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-device',
@@ -10,6 +11,7 @@ import { retry } from 'rxjs/operators';
 export class DeviceComponent implements OnInit {
   @Input() name: string = 'Blank';
   url: string = '';
+  metadata: any;
   data: any;
   retryCount = 3;
   showExpansionPanel: boolean = false;
@@ -17,18 +19,29 @@ export class DeviceComponent implements OnInit {
   constructor (private http: HttpClient) {}
 
   ngOnInit() {
-    this.url = 'http://localhost:1234/device/' + this.name;
-    this.http.get<any>(this.url).pipe(retry(this.retryCount))
-      .subscribe({
+    var url = 'http://localhost:1234/device/' + this.name;
+    this.http.get<any>(url).pipe(retry(this.retryCount),
+      switchMap((metadata: any) => {
+        this.metadata = metadata;
+        this.showExpansionPanel = this.metadata.hasOwnProperty('Property');
+        if (this.showExpansionPanel) {
+          const property = metadata.Property;
+          const url2 = url + '/' + property;
+          return this.http.get(url2).pipe(retry(this.retryCount));
+        } else {
+          return of(null);
+        }
+      })
+      ).subscribe({
         next: (v) => {
           this.data = v;
-          this.showExpansionPanel = this.data.hasOwnProperty('Property');
         },
         error: (e) => console.error(e),
       }
     );
-   
   }
 
+  updatePosition() {
 
+  }
 }
