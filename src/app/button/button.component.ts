@@ -8,7 +8,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class ButtonComponent {
   data: any;
-  url: string;
+  url: string = '';
 
   getData() {
 
@@ -22,7 +22,7 @@ export class ButtonComponent {
       .subscribe({
         next: (v) => this.data = v.data,
         error: (e) => console.error(e),
-      }       
+      }
     );
   }
 

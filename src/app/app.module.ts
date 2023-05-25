@@ -7,15 +7,18 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
+import { MatCardModule } from '@angular/material/card';
 
 import { AppComponent } from './app.component';
 import { ButtonComponent } from './button/button.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DeviceComponent } from './device/device.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ButtonComponent
+    ButtonComponent,
+    DeviceComponent
   ],
   imports: [
     BrowserModule,
@@ -25,7 +28,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatIconModule,
     MatToolbarModule,
     MatSidenavModule,
-    MatListModule
+    MatListModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
