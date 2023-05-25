@@ -4,6 +4,10 @@
   </button>
   <span>Microscopy Hardware Control</span>
   <span class="spacer"></span>
+  <button mat-icon-button (click)="toggleSyncing()">
+    <mat-icon *ngIf="sharedService.isSyncing">sync</mat-icon>
+    <mat-icon *ngIf="!sharedService.isSyncing">sync_disabled</mat-icon>
+  </button>
 </mat-toolbar>
 
 <mat-sidenav-container>

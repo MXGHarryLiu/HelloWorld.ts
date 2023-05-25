@@ -1,6 +1,7 @@
 import { Component, ViewChild, ViewContainerRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DeviceComponent } from './device/device.component';
+import { SharedService } from './shared.service';
 
 @Component({
   selector: 'app-root',
@@ -15,9 +16,9 @@ export class AppComponent {
   
   @ViewChild('appDevice', {read: ViewContainerRef}) appDevice!: ViewContainerRef;
 
-  constructor (private http: HttpClient) {}
+  constructor (private http: HttpClient, public sharedService: SharedService) {}
 
-  getDevice() {
+  getDevice(): void {
     this.devices = [];
     this.appDevice.clear();
 
@@ -32,12 +33,16 @@ export class AppComponent {
     );
   }
 
-  loadCard() {
+  loadCard(): void {
     var i: number;
     var componentRef;
     for (i = 0; i < this.devices.length; i++) {
       componentRef = this.appDevice.createComponent<DeviceComponent>(DeviceComponent);
       componentRef.instance.name = this.devices[i];
     }
+  }
+
+  toggleSyncing(): void {
+    this.sharedService.isSyncing = !this.sharedService.isSyncing;
   }
 }

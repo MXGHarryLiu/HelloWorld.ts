@@ -15,6 +15,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DeviceComponent } from './device/device.component';
+import { SharedService } from './shared.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,7 @@ import { DeviceComponent } from './device/device.component';
     MatInputModule,
     MatFormFieldModule
   ],
-  providers: [],
+  providers: [SharedService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

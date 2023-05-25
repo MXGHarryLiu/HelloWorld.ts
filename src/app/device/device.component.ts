@@ -2,6 +2,7 @@ import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { retry, switchMap, filter } from 'rxjs/operators';
 import { interval, of, Subscription } from 'rxjs';
+import { SharedService } from '../shared.service';
 
 @Component({
   selector: 'app-device',
@@ -18,7 +19,7 @@ export class DeviceComponent implements OnInit {
   showExpansionPanel: boolean = false;
   private subscription!: Subscription;
 
-  constructor (private http: HttpClient) {}
+  constructor (private http: HttpClient, public sharedService: SharedService) {}
 
   ngOnInit(): void {
     var url = 'http://localhost:1234/device/' + this.name;
@@ -42,7 +43,7 @@ export class DeviceComponent implements OnInit {
       }
     );
     this.subscription = interval(this.intervalTime).pipe(
-      filter(() => this.showExpansionPanel), 
+      filter(() => this.showExpansionPanel && this.sharedService.isSyncing), 
       switchMap(() => this.http.get(url + '/' + this.metadata.Property).pipe(retry(this.retryCount)))
         ).subscribe((data: any) => {
         this.data = data;
