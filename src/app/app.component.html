@@ -1,1 +1,21 @@
-<app-button></app-button>
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="sidenav.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>Microscopy Hardware Control</span>
+  <span class="spacer"></span>
+</mat-toolbar>
+
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav>
+    <mat-nav-list>
+      <a mat-list-item href="#">Menu Item 1</a>
+      <a mat-list-item href="#">Menu Item 2</a>
+      <a mat-list-item href="#">Menu Item 3</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <app-button></app-button>
+  </mat-sidenav-content>
+</mat-sidenav-container>

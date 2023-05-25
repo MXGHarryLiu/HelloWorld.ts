@@ -27,6 +27,6 @@ export class ButtonComponent {
   }
 
   constructor(private http: HttpClient) {
-    this.url = '/api/device/PriorStage/position';
+    this.url = 'http://localhost:1234/device/PriorStage/position';
   }
 }
