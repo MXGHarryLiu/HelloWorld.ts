@@ -16,10 +16,8 @@
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <ng-container *ngIf="showDevices">
-      <ng-container *ngFor="let deviceName of devices">
-        <app-device [name]="deviceName"></app-device>
-      </ng-container>
+    <ng-container>
+      <ng-template #appDevice></ng-template>
     </ng-container>
   </mat-sidenav-content>
 </mat-sidenav-container>

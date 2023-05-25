@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ViewContainerRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { DeviceComponent } from './device/device.component';
 
 @Component({
   selector: 'app-root',
@@ -7,30 +8,35 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'hello-world';
   url: string = 'http://localhost:1234/manager/device';
   response: any;
-  deviceName: string = 'DeviceName';
-  showDevices: boolean = false;
   devices: string[] = [];
+  
+  @ViewChild('appDevice', {read: ViewContainerRef}) appDevice!: ViewContainerRef;
 
-  getDeviceTest() {
-    this.showDevices = true;
-  }
+  constructor (private http: HttpClient) {}
 
   getDevice() {
+    this.devices = [];
+    this.appDevice.clear();
+
     this.http.get<any>(this.url)
       .subscribe({
         next: (v) => {
           this.response = v; 
           this.devices = v.deviceName;
-          this.showDevices = true},
+          this.loadCard()},
         error: (e) => console.error(e),
       }
     );
   }
 
-  constructor (private http: HttpClient) {}
-
-
+  loadCard() {
+    var i: number;
+    var componentRef;
+    for (i = 0; i < this.devices.length; i++) {
+      componentRef = this.appDevice.createComponent<DeviceComponent>(DeviceComponent);
+      componentRef.instance.name = this.devices[i];
+    }
+  }
 }
