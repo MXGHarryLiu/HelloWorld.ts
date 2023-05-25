@@ -1,7 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { retry, switchMap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { retry, switchMap, filter } from 'rxjs/operators';
+import { interval, of, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-device',
@@ -13,12 +13,14 @@ export class DeviceComponent implements OnInit {
   url: string = '';
   metadata: any;
   data: any;
-  retryCount = 3;
+  retryCount: number = 3;
+  intervalTime: number = 1000; // 1 second
   showExpansionPanel: boolean = false;
+  private subscription!: Subscription;
 
   constructor (private http: HttpClient) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     var url = 'http://localhost:1234/device/' + this.name;
     this.http.get<any>(url).pipe(retry(this.retryCount),
       switchMap((metadata: any) => {
@@ -39,6 +41,17 @@ export class DeviceComponent implements OnInit {
         error: (e) => console.error(e),
       }
     );
+    this.subscription = interval(this.intervalTime).pipe(
+      filter(() => this.showExpansionPanel), 
+      switchMap(() => this.http.get(url + '/' + this.metadata.Property).pipe(retry(this.retryCount)))
+        ).subscribe((data: any) => {
+        this.data = data;
+      }
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   updatePosition() {
