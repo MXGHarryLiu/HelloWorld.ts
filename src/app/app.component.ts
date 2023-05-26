@@ -43,6 +43,10 @@ export class AppComponent {
   }
 
   toggleSyncing(): void {
-    this.sharedService.isSyncing = !this.sharedService.isSyncing;
+    if (this.sharedService.syncStatus == 1){
+      this.sharedService.syncStatus = 0;
+    } else {
+      this.sharedService.syncStatus = 1;
+    }
   }
 }

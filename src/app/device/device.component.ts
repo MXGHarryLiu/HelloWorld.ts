@@ -36,19 +36,23 @@ export class DeviceComponent implements OnInit {
         }
       })
       ).subscribe({
-        next: (v) => {
-          this.data = v;
-        },
-        error: (e) => console.error(e),
+        next: (v) => this.data = v,
+        error: (e) => {
+          this.sharedService.syncStatus = 2;
+          console.error(e);
+        }
       }
     );
     this.subscription = interval(this.intervalTime).pipe(
-      filter(() => this.showExpansionPanel && this.sharedService.isSyncing), 
+      filter(() => this.showExpansionPanel && this.sharedService.syncStatus == 1), 
       switchMap(() => this.http.get(url + '/' + this.metadata.Property).pipe(retry(this.retryCount)))
-        ).subscribe((data: any) => {
-        this.data = data;
-      }
-    );
+        ).subscribe({
+          next: (data: any) => this.data = data, 
+          error: (e) => {
+            this.sharedService.syncStatus = 2;
+            console.error(e);
+          }
+        });
   }
 
   ngOnDestroy(): void {

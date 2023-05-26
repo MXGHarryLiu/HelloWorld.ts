@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class SharedService {
   
-  isSyncing: boolean = false;
+  syncStatus: number = 0;  // 0: off, 1, on, 2: error
 
   constructor() { }
 }
