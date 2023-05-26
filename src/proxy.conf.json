@@ -1,7 +1,7 @@
 
 {
   "/api": {
-    "target": "http://10.20.201.78:1234/",
+    "target": "http://192.168.4.101:1234/",
     "secure": false,
     "changeOrigin": true, 
     "headers": {

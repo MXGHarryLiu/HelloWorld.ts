@@ -1,0 +1,7 @@
+<h1 mat-dialog-title>{{ metadata?.Name || '?' }} Info</h1>
+<div mat-dialog-content class="mat-typography">
+    <p [innerHTML]="getParameterString()"></p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Close</button>
+</div>

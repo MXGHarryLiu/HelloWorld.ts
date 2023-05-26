@@ -1,10 +1,11 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { retry, switchMap, filter } from 'rxjs/operators';
 import { interval, of, Subscription } from 'rxjs';
 import { SharedService } from '../shared.service';
-import { MatDialog } from '@angular/material/dialog';
-import { FormControl } from '@angular/forms';
+import { MatDialog, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatButtonModule} from '@angular/material/button';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-device',
@@ -21,11 +22,13 @@ export class DeviceComponent implements OnInit {
   showExpansionPanel: boolean = false;
   private subscription!: Subscription;
 
-  positionX: FormControl = new FormControl();
-  positionY: FormControl = new FormControl();
+  positionX!: number;
+  positionY!: number;
 
-  constructor (private http: HttpClient, public sharedService: SharedService, 
-    private dialog: MatDialog) {}
+  constructor (private http: HttpClient, 
+    public sharedService: SharedService, 
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     var url = 'api/device/' + this.name;
@@ -66,14 +69,14 @@ export class DeviceComponent implements OnInit {
   }
 
   showInfo(): void {
-    
+    this.dialog.open(InfoDialog, {data: this.metadata});
   }
 
   updatePosition(): void {
     const url = 'api/device/' + this.name + '/position';
     const inputData = {
-      X: this.positionX.value,
-      Y: this.positionY.value
+      X: this.positionX,
+      Y: this.positionY
     };
 
     const headers = new HttpHeaders()
@@ -81,7 +84,36 @@ export class DeviceComponent implements OnInit {
     
     this.http.put(url, inputData, { headers: headers }).subscribe({
       next: (d) => d, 
-      error: (e) => e
+      error: (e) => {
+        this.warning('Unable to set parameter due to lost connection. ');
+        console.error(e);
+      }
     });
   }
+
+  warning(msg: string): void {
+    this.snackBar.open(msg, 'Ok', {
+      duration: 5000
+    });
+  }
+}
+
+@Component({
+  selector: 'info-dialog',
+  templateUrl: './info.dialog.html',
+  standalone: true,
+  imports: [MatDialogModule, MatButtonModule],
+})
+export class InfoDialog {
+
+  constructor (@Inject(MAT_DIALOG_DATA) public metadata: any) {}
+
+  getParameterString(): string {
+    var s: string = '';
+    for (const parameter in this.metadata.Parameter){
+      s = s + parameter + ': ' + this.metadata.Parameter[parameter] + '<br>';
+    }
+    return s;
+  }
+  
 }
