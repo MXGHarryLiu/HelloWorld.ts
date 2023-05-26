@@ -10,7 +10,7 @@
           <mat-icon>location_on</mat-icon>
           <mat-panel-title>{{ metadata.Property }}</mat-panel-title>
           <mat-panel-description>
-            ({{ data?.data?.X || '?' }}, {{ data?.data?.Y || '?' }})
+            ({{ data?.data?.X !== null ? data?.data?.X : '?' }}, {{ data?.data?.Y !== null ? data?.data?.Y : '?' }})
           </mat-panel-description>
         </mat-expansion-panel-header>
         <mat-form-field>

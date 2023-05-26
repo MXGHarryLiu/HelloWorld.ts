@@ -2,6 +2,7 @@ import { Component, ViewChild, ViewContainerRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DeviceComponent } from './device/device.component';
 import { SharedService } from './shared.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,9 @@ export class AppComponent {
   
   @ViewChild('appDevice', {read: ViewContainerRef}) appDevice!: ViewContainerRef;
 
-  constructor (private http: HttpClient, public sharedService: SharedService) {}
+  constructor (private http: HttpClient, 
+    public sharedService: SharedService, 
+    private snackBar: MatSnackBar) {}
 
   getDevice(): void {
     this.devices = [];
@@ -28,7 +31,10 @@ export class AppComponent {
           this.response = v; 
           this.devices = v.deviceName;
           this.loadCard()},
-        error: (e) => console.error(e),
+        error: (e) => {
+          this.warning('Unable to connect to microscope server. ');
+          console.error(e);
+        }
       }
     );
   }
@@ -48,5 +54,11 @@ export class AppComponent {
     } else {
       this.sharedService.syncStatus = 1;
     }
+  }
+
+  warning(msg: string): void {
+    this.snackBar.open(msg, 'Ok', {
+      duration: 5000
+    });
   }
 }
