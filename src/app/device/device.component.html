@@ -2,6 +2,10 @@
   <mat-card-header>
     <mat-card-title>{{ name }}</mat-card-title>
     <mat-card-subtitle>{{ metadata?.Class || '...'}} by {{ metadata?.Vender || '...' }}</mat-card-subtitle>
+    <span class="spacer"></span>
+    <button mat-icon-button (click)="showInfo()" color="basic">
+      <mat-icon>info</mat-icon>
+    </button>
   </mat-card-header>
   <mat-card-content>
     <ng-container *ngIf="showExpansionPanel">
@@ -10,16 +14,16 @@
           <mat-icon>location_on</mat-icon>
           <mat-panel-title>{{ metadata.Property }}</mat-panel-title>
           <mat-panel-description>
-            ({{ data?.data?.X !== null ? data?.data?.X : '?' }}, {{ data?.data?.Y !== null ? data?.data?.Y : '?' }})
+            ({{ data?.data?.X !== null ? data?.data?.X : '?' }}, {{ data?.data?.Y !== null ? data?.data?.Y : '?' }}) μm
           </mat-panel-description>
         </mat-expansion-panel-header>
         <mat-form-field>
           <mat-label>X</mat-label>
-          <input matInput type="number">
+          <input matInput type="number" [(ngModel)]="positionX">
         </mat-form-field>
         <mat-form-field>
           <mat-label>Y</mat-label>
-          <input matInput type="number">
+          <input matInput type="number" [(ngModel)]="positionY">
         </mat-form-field>
 
         <mat-action-row>

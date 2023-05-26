@@ -2,3 +2,7 @@ mat-card {
     margin: 6px; 
     max-width: 800px;
 }
+
+.spacer {
+    flex: 1 1 auto;
+}

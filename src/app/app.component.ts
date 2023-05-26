@@ -11,7 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class AppComponent {
   title: string = "Microscopy Hardware Control"
-  url: string = 'http://localhost:1234/manager/device';
+  url: string = 'api/manager/device';
   response: any;
   devices: string[] = [];
   
